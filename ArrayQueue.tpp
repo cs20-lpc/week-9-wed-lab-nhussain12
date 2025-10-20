@@ -2,7 +2,7 @@ template <typename T>
 ArrayQueue<T>::ArrayQueue(int i) : buffer(new T[i]), maxSize(i) {
     // TODO
     frontIndex = 0;
-    backIndex = -1;
+    backIndex = 0;
 }
 
 template <typename T>
@@ -37,11 +37,9 @@ T ArrayQueue<T>::back() const {
 template <typename T>
 void ArrayQueue<T>::clear() {
     // TODO
-    delete[] buffer;
-    buffer = nullptr;
     this->length = 0;
     frontIndex = 0;
-    backIndex = -1;
+    backIndex = 0;
 }
 
 template <typename T>
@@ -52,11 +50,11 @@ void ArrayQueue<T>::copy(const ArrayQueue<T>& copyObj) {
     buffer = new T[maxSize];
 
     for (int i = 0; i < copyObj.length; i++) {
-        buffer[i] = copyObj.buffer[i];
+        buffer[i] = copyObj.buffer[(copyObj.frontIndex + i) % copyObj.maxSize];
     }
 
-    frontIndex = copyObj.frontIndex;
-    backIndex = copyObj.backIndex;
+    frontIndex = 0;
+    backIndex = this->length-1;
 }
 
 template <typename T>
@@ -71,7 +69,7 @@ void ArrayQueue<T>::dequeue() {
 
     if (this->length == 0) {
         frontIndex = 0;
-        backIndex = -1;
+        backIndex = 0;
     }
 }
 
